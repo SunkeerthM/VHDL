@@ -38,18 +38,21 @@ begin
 
 		if(M <= '1') then
 			State <= State + 1;
-			accumulator ( 8 downto 4 ) <= add4( accumulator ( 7 downto 4 ) 
+			accumulator ( 8 downto 4 ) <= add4( accumulator ( 7 downto 4 ) , multiplicand, '0' );
 		else
 			State <= 1;
-			accumulator ( 8 downto 4) <= "00000";	
-			accumulator ( 4 downto 0) <=  multiplier;
+			accumulator <= '0' & accumulator ( 8 downto 1 );
+			State <= State + 2;
+		end if;
 		
-		
-
-
-
-
-
 		when 2 | 4 | 6 | 8 =>
-
-end architecture Behavioral;
+			accumulator <= '0' & accumulator ( 8 downto 1 );
+			State <= State + 1;
+			
+		when 9 =>
+		State <= 0;
+		
+	end case;
+	end process;
+	Done <= '1' when State = 9 else 0 ;
+end behave;		
